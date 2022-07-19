@@ -1,7 +1,10 @@
+import Seo from "../components/Seo";
+
 export default function Home() {
   return (
-    <div>
-      <h1>Hello</h1>
-    </div>
+    <>
+      <Seo title="About" />
+      <h1 className="active">Hello</h1>
+    </>
   );
 }
