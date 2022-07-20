@@ -1,14 +1,49 @@
 import Seo from "../components/Seo";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 export default function Home({ results }) {
+  const router = useRouter();
+  const onClick = (id, title, poster_path) => {
+    router.push(
+      {
+        pathname: `movies/${id}`,
+        query: {
+          title,
+          poster_path,
+        },
+      },
+      `movies/${id}` // title의 경우, url에서는 마스킹함
+    );
+  };
+
   return (
     <div className="container">
       <Seo title="Home" />
       {/* {!results && <h4>Loading..</h4>} */}
       {results?.map((movie) => (
-        <div className="movie" key={movie.id}>
+        <div
+          onClick={() =>
+            onClick(movie.id, movie.original_title, movie.poster_path)
+          }
+          className="movie"
+          key={movie.id}
+        >
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
-          <h4>{movie.original_title}</h4>
+          <h4>
+            <Link
+              href={{
+                pathname: `movies/${movie.id}`,
+                query: {
+                  title: movie.original_title,
+                  poster_path: movie.poster_path,
+                },
+              }}
+              as={`movies/${movie.id}`} // title의 경우, url에서는 마스킹함
+            >
+              <a>{movie.original_title}</a>
+            </Link>
+          </h4>
         </div>
       ))}
       <style jsx>{`
