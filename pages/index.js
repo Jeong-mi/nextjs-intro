@@ -5,16 +5,7 @@ import { useRouter } from "next/router";
 export default function Home({ results }) {
   const router = useRouter();
   const onClick = (id, title, poster_path) => {
-    router.push(
-      {
-        pathname: `movies/${id}`,
-        query: {
-          title,
-          poster_path,
-        },
-      },
-      `movies/${id}` // title의 경우, url에서는 마스킹함
-    );
+    router.push(`/movies/${title}/${id}`);
   };
 
   return (
@@ -31,16 +22,7 @@ export default function Home({ results }) {
         >
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>
-            <Link
-              href={{
-                pathname: `movies/${movie.id}`,
-                query: {
-                  title: movie.original_title,
-                  poster_path: movie.poster_path,
-                },
-              }}
-              as={`movies/${movie.id}`} // title의 경우, url에서는 마스킹함
-            >
+            <Link href={`movies/${movie.title}/${movie.id}`}>
               <a>{movie.original_title}</a>
             </Link>
           </h4>
