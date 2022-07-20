@@ -1,20 +1,11 @@
-import { useEffect, useState } from "react";
 import Seo from "../components/Seo";
 
-export default function Home() {
-  const [movies, setMovies] = useState([]);
-  useEffect(() => {
-    (async () => {
-      const { results } = await (await fetch(`/api/movies`)).json();
-      setMovies(results);
-    })();
-  }, []);
-
+export default function Home({ results }) {
   return (
     <div className="container">
-      <Seo title="About" />
-      {!movies && <h4>Loading..</h4>}
-      {movies?.map((movie) => (
+      <Seo title="Home" />
+      {/* {!results && <h4>Loading..</h4>} */}
+      {results?.map((movie) => (
         <div className="movie" key={movie.id}>
           <img src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`} />
           <h4>{movie.original_title}</h4>
@@ -43,4 +34,17 @@ export default function Home() {
       `}</style>
     </div>
   );
+}
+
+// 아래 코드는 서버에서 돌아갈 것임, 클라이언트에게 보여지지 않음
+// 무엇을 리턴하든지 props로써 페이지에 전달
+export async function getServerSideProps() {
+  const { results } = await (
+    await fetch(`http://localhost:3000/api/movies`)
+  ).json();
+  return {
+    props: {
+      results,
+    },
+  };
 }
